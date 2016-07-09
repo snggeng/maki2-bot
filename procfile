@@ -1,1 +1,1 @@
-node instruction.js
+worker: node bot.js
