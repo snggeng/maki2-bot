@@ -174,6 +174,11 @@ controller.hears(['hungry', 'i need food', 'bored'],
 
           bot.reply(message, `:${randomFood}: here's a ${randomFood} for you`)
         })
+        
+controller.hears(['Harris', 'harris'],
+  'direct_message,direct_mention,mention', function (bot, message){
+    bot.reply(message, 'That dude? He sucks man')
+  })
 
 function formatUptime (uptime) {
   let unit = 'second'
