@@ -5,4 +5,3 @@ ASSERT(process.env.token, 'YOU MUST PROVIDE A SLACK API TOKEN IN THE ENVIRONMENT
 
 var SLACKBOT = require('./bot.js')
 var WEATHER = new SLACKBOT()
-WEATHER.GOGOGO()

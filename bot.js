@@ -167,12 +167,20 @@ controller.hears(['uptime', 'identify yourself', 'who are you', 'what is your na
              '>. I have been running for ' + uptime + ' on ' + hostname + '.')
     })
 
-controller.hears(['hungry', 'i need food', 'bored'],
+controller.hears(['hungry', 'i need food'],
         'direct_message,direct_mention,mention', function (bot, message) {
           let food = ['sushi', 'pizza', 'beer', 'dango', 'sake', 'taco', 'burrito', 'ramen', 'stew', 'peach', 'curry']
           let randomFood = food[Math.floor(Math.random() * food.length)]
 
           bot.reply(message, `:${randomFood}: here's a ${randomFood} for you`)
+        })
+
+controller.hears(['bored', 'tired', 'random'],
+        'direct_message,direct_mention,mention', function (bot, message) {
+          let text = ['#echo wassup', '#mashup your mother', '#mashup beer', '#mashup cheer up', '#echo too bad', '#magic8ball you are creepy', '#magic8ball fuck yes', '#magic8ball no way', '#magic8ball si wai', 'smart si wai', '#echo curry']
+          let randomText = text[Math.floor(Math.random() * food.length)]
+
+          bot.reply(message, `/giphy ${randomText}`)
         })
 
 function formatUptime (uptime) {
@@ -192,3 +200,60 @@ function formatUptime (uptime) {
   uptime = uptime + ' ' + unit
   return uptime
 }
+
+// WIT AI code goes here
+'use strict'
+
+let Wit = null
+let log = null
+try {
+  // if running from repo
+  Wit = require('../').Wit
+  log = require('../').log
+} catch (e) {
+  Wit = require('node-wit').Wit
+  log = require('node-wit').log
+}
+
+const WIT_TOKEN = process.env.WIT_TOKEN
+
+const firstEntityValue = (entities, entity) => {
+  const val = entities && entities[entity] &&
+    Array.isArray(entities[entity]) &&
+    entities[entity].length > 0 &&
+    entities[entity][0].value
+  if (!val) {
+    return null
+  }
+  return typeof val === 'object' ? val.value : val
+}
+
+const Actions = {
+  send (request, response) {
+    const {sessionId, context, entities} = request
+    const {text, quickreplies} = response
+    return new Promise(function (resolve, reject) {
+      console.log('sending...', JSON.stringify(response))
+      return resolve()
+    })
+  },
+  getForecast ({context, entities}) {
+    return new Promise(function (resolve, reject) {
+      var location = firstEntityValue(entities, 'location')
+      if (location) {
+        context.forecast = 'sunny in ' + location // we should call a weather API here
+        delete context.missingLocation
+      } else {
+        context.missingLocation = true
+        delete context.forecast
+      }
+      return resolve(context)
+    })
+  }
+}
+
+const wit = new Wit({
+  accessToken: WIT_TOKEN,
+  actions: Actions,
+  logger: new log.Logger(log.INFO)
+})
