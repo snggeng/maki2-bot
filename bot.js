@@ -186,12 +186,17 @@ controller.hears(['bored', 'tired', 'random'],
         'direct_message,direct_mention,mention', function (bot, message) {
           // let gif = ['wassup', 'walking on sunshine', '#mashup beer', 'cheer up', 'too bad', 'you are creepy', 'fuck yes', 'no way', 'bow down to me', 'smart si wai', 'sleepy']
           // let randomGif = gif[Math.floor(Math.random() * gif.length)]
-          let genGif = giphy.random('superman', function (err, res) {
-            if (err) { console.log(err) }
-            res.data.image_original_url
+
+          giphy.random('superman', function (err, res) {
+            if (err) console.log(err)
+            // put the bot.reply in here cause the scope of genGif get lose outside of this scope
+            // another is also because of the callback, if you put it outside, bot.reply will run first even before
+            // you get any gif data.
+            let genGif = res.data.url
+            bot.reply(message, genGif)
           })
 
-          bot.reply(message, `${genGif}`)
+
           // bot.reply(message, 'https://giphy.com/gifs/embarrassed-facepalm-panda-14aUO0Mf7dWDXW')
         })
 
