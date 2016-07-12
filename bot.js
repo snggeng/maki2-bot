@@ -11,7 +11,7 @@ let Botkit = require('./node_modules/botkit/lib/Botkit.js')
 let os = require('os')
 
 let controller = Botkit.slackbot({
-  debug: true
+  // debug: true
 })
 
 let bot = controller.spawn({
@@ -176,9 +176,9 @@ controller.hears(['hungry', 'i need food'],
 
           bot.reply(message, `:${randomFood}: here's a ${randomFood} for you`)
         })
-        
+
 controller.hears(['Harris', 'harris'],
-  'direct_message,direct_mention,mention', function (bot, message){
+  'direct_message,direct_mention,mention', function (bot, message) {
     bot.reply(message, 'That dude? He sucks man')
   })
 
