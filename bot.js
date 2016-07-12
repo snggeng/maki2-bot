@@ -5,6 +5,8 @@ if (!process.env.TOKEN) {
 
 const TOKEN = process.env.TOKEN
 
+const giphy = require('giphy-api')()
+
 let Botkit = require('./node_modules/botkit/lib/Botkit.js')
 let os = require('os')
 
@@ -177,10 +179,30 @@ controller.hears(['hungry', 'i need food'],
 
 controller.hears(['bored', 'tired', 'random'],
         'direct_message,direct_mention,mention', function (bot, message) {
-          let text = ['#echo wassup', '#mashup your mother', '#mashup beer', '#mashup cheer up', '#echo too bad', '#magic8ball you are creepy', '#magic8ball fuck yes', '#magic8ball no way', '#magic8ball si wai', 'smart si wai', '#echo curry']
-          let randomText = text[Math.floor(Math.random() * food.length)]
+          // let gif = ['wassup', 'walking on sunshine', '#mashup beer', 'cheer up', 'too bad', 'you are creepy', 'fuck yes', 'no way', 'bow down to me', 'smart si wai', 'sleepy']
+          // let randomGif = gif[Math.floor(Math.random() * gif.length)]
+          let genGif = giphy.random('superman', function (err, res) {
+            if (err) { console.log(err) }
+            res.data.image_original_url
+          })
 
-          bot.reply(message, `/giphy ${randomText}`)
+          bot.reply(message, `${genGif}`)
+          // bot.reply(message, 'https://giphy.com/gifs/embarrassed-facepalm-panda-14aUO0Mf7dWDXW')
+        })
+
+controller.hears(['where should we eat', 'lunch', 'where to eat', 'where to have', 'where should we go', 'what to eat'],
+        'direct_message,direct_mention,mention', function (bot, message) {
+          let text = ['maxwell', 'chinatown', 'salad', 'essen', 'muchachos', 'salad', 'coffeeshop opposite', 'salad', 'tzechar', 'paul’s', 'salad']
+          let prompt = ['The tribe has spoken:', 'And... by unanimous vote:', 'You hate it but here goes:', 'Based on today\'s weather:', 'Do you even need to think?']
+          let randomPrompt = prompt[Math.floor(Math.random() * prompt.length)]
+          let randomText = text[Math.floor(Math.random() * text.length)].toUpperCase()
+
+          bot.reply(message, `${randomPrompt}\n${randomText}`)
+        })
+
+controller.hears(['are you calling me fat', 'fat', 'are you'],
+        'direct_message,direct_mention,mention', function (bot, message) {
+          bot.reply(message, `YES`)
         })
 
 function formatUptime (uptime) {
@@ -202,58 +224,58 @@ function formatUptime (uptime) {
 }
 
 // WIT AI code goes here
-'use strict'
-
-let Wit = null
-let log = null
-try {
-  // if running from repo
-  Wit = require('../').Wit
-  log = require('../').log
-} catch (e) {
-  Wit = require('node-wit').Wit
-  log = require('node-wit').log
-}
-
-const WIT_TOKEN = process.env.WIT_TOKEN
-
-const firstEntityValue = (entities, entity) => {
-  const val = entities && entities[entity] &&
-    Array.isArray(entities[entity]) &&
-    entities[entity].length > 0 &&
-    entities[entity][0].value
-  if (!val) {
-    return null
-  }
-  return typeof val === 'object' ? val.value : val
-}
-
-const Actions = {
-  send (request, response) {
-    const {sessionId, context, entities} = request
-    const {text, quickreplies} = response
-    return new Promise(function (resolve, reject) {
-      console.log('sending...', JSON.stringify(response))
-      return resolve()
-    })
-  },
-  getForecast ({context, entities}) {
-    return new Promise(function (resolve, reject) {
-      var location = firstEntityValue(entities, 'location')
-      if (location) {
-        context.forecast = 'sunny in ' + location // we should call a weather API here
-        delete context.missingLocation
-      } else {
-        context.missingLocation = true
-        delete context.forecast
-      }
-      return resolve(context)
-    })
-  }
-}
-
-const wit = new Wit({
-  accessToken: WIT_TOKEN,
-  actions: Actions,
-  logger: new log.Logger(log.INFO)
-})
+// 'use strict'
+//
+// let Wit = null
+// let log = null
+// try {
+//   // if running from repo
+//   Wit = require('../').Wit
+//   log = require('../').log
+// } catch (e) {
+//   Wit = require('node-wit').Wit
+//   log = require('node-wit').log
+// }
+//
+// const WIT_TOKEN = process.env.WIT_TOKEN
+//
+// const firstEntityValue = (entities, entity) => {
+//   const val = entities && entities[entity] &&
+//     Array.isArray(entities[entity]) &&
+//     entities[entity].length > 0 &&
+//     entities[entity][0].value
+//   if (!val) {
+//     return null
+//   }
+//   return typeof val === 'object' ? val.value : val
+// }
+//
+// const Actions = {
+//   send (request, response) {
+//     const {sessionId, context, entities} = request
+//     const {text, quickreplies} = response
+//     return new Promise(function (resolve, reject) {
+//       console.log('sending...', JSON.stringify(response))
+//       return resolve()
+//     })
+//   },
+//   getForecast ({context, entities}) {
+//     return new Promise(function (resolve, reject) {
+//       var location = firstEntityValue(entities, 'location')
+//       if (location) {
+//         context.forecast = 'sunny in ' + location // we should call a weather API here
+//         delete context.missingLocation
+//       } else {
+//         context.missingLocation = true
+//         delete context.forecast
+//       }
+//       return resolve(context)
+//     })
+//   }
+// }
+//
+// const wit = new Wit({
+//   accessToken: WIT_TOKEN,
+//   actions: Actions,
+//   logger: new log.Logger(log.INFO)
+// })
