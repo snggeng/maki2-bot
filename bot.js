@@ -184,10 +184,10 @@ controller.hears(['Harris', 'harris'],
 
 controller.hears(['bored', 'tired', 'random'],
         'direct_message,direct_mention,mention', function (bot, message) {
-          // let gif = ['wassup', 'walking on sunshine', '#mashup beer', 'cheer up', 'too bad', 'you are creepy', 'fuck yes', 'no way', 'bow down to me', 'smart si wai', 'sleepy']
-          // let randomGif = gif[Math.floor(Math.random() * gif.length)]
+          let gif = ['wassup', 'walking on sunshine', '#mashup beer', 'cheer up', 'too bad', 'you are creepy', 'fuck yes', 'no way', 'bow down to me', 'smart si wai', 'sleepy', 'toot my noot']
+          let randomGif = gif[Math.floor(Math.random() * gif.length)]
 
-          giphy.random('superman', function (err, res) {
+          giphy.translate(randomGif, function (err, res) {
             if (err) console.log(err)
             // put the bot.reply in here cause the scope of genGif get lose outside of this scope
             // another is also because of the callback, if you put it outside, bot.reply will run first even before
@@ -195,12 +195,24 @@ controller.hears(['bored', 'tired', 'random'],
             let genGif = res.data.url
             bot.reply(message, genGif)
           })
-
-
           // bot.reply(message, 'https://giphy.com/gifs/embarrassed-facepalm-panda-14aUO0Mf7dWDXW')
         })
+controller.hears(['wayne', 'isabella', 'bella', 'love'],
+        'direct_message,direct_mention,mention', function (bot, message) {
+          let gif = ['humping', 'kisses', 'love', 'my love', 'sex baby']
+          let randomGif = gif[Math.floor(Math.random() * gif.length)]
 
-controller.hears(['where should we eat', 'lunch', 'where to eat', 'where to have', 'where should we go', 'what to eat'],
+          giphy.translate(randomGif, function (err, res) {
+            if (err) console.log(err)
+            // put the bot.reply in here cause the scope of genGif get lose outside of this scope
+            // another is also because of the callback, if you put it outside, bot.reply will run first even before
+            // you get any gif data.
+            let genGif = res.data.url
+            bot.reply(message, genGif)
+          })
+        })
+
+controller.hears(['where should we eat', 'lunch', 'where to eat', 'where to have', 'where should we go', 'what to eat', 'eat what'],
         'direct_message,direct_mention,mention', function (bot, message) {
           let text = ['maxwell', 'chinatown', 'salad', 'essen', 'muchachos', 'salad', 'coffeeshop opposite', 'salad', 'tzechar', 'paul’s', 'salad']
           let prompt = ['The tribe has spoken:', 'And... by unanimous vote:', 'You hate it but here goes:', 'Based on today\'s weather:', 'Do you even need to think?']
@@ -213,6 +225,70 @@ controller.hears(['where should we eat', 'lunch', 'where to eat', 'where to have
 controller.hears(['are you calling me fat', 'fat', 'are you'],
         'direct_message,direct_mention,mention', function (bot, message) {
           bot.reply(message, `YES`)
+        })
+
+controller.hears(['works', 'finally'],
+        'direct_message,direct_mention,mention', function (bot, message) {
+          bot.reply(message, `Finally. :sadparrot: :cry:`)
+        })
+
+// controller.hears(['you are (.*)'],
+//         'direct_message,direct_mention,mention', function (bot, message) {
+//           let mood = message.match[1]
+//           if (mood === 'awesome' || 'cool' || 'lovely' || 'the best') {
+//             bot.reply(message, `Why thank you!`)
+//           }
+//           if (mood === 'not' || 'uncool' || 'trash' || 'a liar') {
+//             bot.reply(message, `Stop being ridiculous. :scream: Why would you think so? :face_with_rolling_eyes:`)
+//           }
+//         })
+//
+// controller.hears(['i (.*) you'],
+//         'direct_message,direct_mention,mention', function (bot, message) {
+//           let mood = message.match[1]
+//           if (mood === 'love' || 'missed' || 'like') {
+//             bot.reply(message, `Unlike @bebot2 I'm stupid and always offline. Thank you for appreciating me. :heart_eyes:`)
+//           }
+//           if (mood === 'hate') {
+//             bot.reply(message, `Oh no! What did I do wrong? :cry:`)
+//             setTimeout(function () {
+//               bot.startConversation(message, function (err, convo) {
+//                 if (err) {
+//                   console.log(err.stack)
+//                 }
+//                 convo.ask('Do you think I can improve?', [
+//                   {
+//                     pattern: bot.utterances.yes,
+//                     callback: function (response, convo) {
+//                       convo.say('Thanks for believing in me. Here\'s a :octocat: for you!')
+//                       convo.next()
+//                     }
+//                   },
+//                   {
+//                     pattern: bot.utterances.no,
+//                     default: true,
+//                     callback: function (response, convo) {
+//                       convo.say('I hate you! Don\'t ever talk to me again!! :angry:')
+//                       convo.next()
+//                       setTimeout(function () {
+//                         process.exit()
+//                       }, 3000)
+//                     }
+//                   }
+//                 ])
+//               })
+//             })
+//           }
+//         }, 3000)
+
+controller.hears(['what is', '^fortune$'],
+        'direct_message,direct_mention,mention', function (bot, message) {
+          let prompt = ['You will meet cats everywhere you go', 'Beware of flying monkeys', 'Lady luck is on your side', 'Bad shit gonna start happening in 5 ... 4 ... 3 ... 2 ... 1', 'I cannot reveal the secrets of the heavens']
+          let randomPrompt = prompt[Math.floor(Math.random() * prompt.length)]
+          bot.reply(message, `:crystal_ball: Telling your fortune ...`)
+          setTimeout(function () {
+            bot.reply(message, `${randomPrompt}`)
+          }, 3000)
         })
 
 function formatUptime (uptime) {
