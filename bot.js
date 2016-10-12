@@ -14,14 +14,14 @@ const TOKEN = process.env.TOKEN
 
 const giphy = require('giphy-api')()
 
-let Botkit = require('./node_modules/botkit/lib/Botkit.js')
-let os = require('os')
+var Botkit = require('./node_modules/botkit/lib/Botkit.js')
+var os = require('os')
 
-let controller = Botkit.slackbot({
+var controller = Botkit.slackbot({
   // debug: true
 })
 
-let bot = controller.spawn({
+var bot = controller.spawn({
   token: TOKEN
 }).startRTM()
 
@@ -49,7 +49,7 @@ controller.hears(['hello', 'hi'], 'direct_message,direct_mention,mention', funct
 })
 
 controller.hears(['call me (.*)', 'my name is (.*)', 'i am (.*)'], 'direct_message,direct_mention,mention', function (bot, message) {
-  let name = message.match[1]
+  var name = message.match[1]
   controller.storage.users.get(message.user, function (err, user) {
     if (err) {
       console.log(err.stack)
@@ -86,7 +86,7 @@ controller.hears(['what is my name', 'who am i'], 'direct_message,direct_mention
                 pattern: 'yes',
                 callback: function (response, convo) {
                 // since no further messages are queued after this,
-                // the conversation will end naturally with status == 'completed'
+                // the conversation will end naturally with status == 'compvared'
                   convo.next()
                 }
               },
@@ -109,7 +109,7 @@ controller.hears(['what is my name', 'who am i'], 'direct_message,direct_mention
             convo.next()
           }, {'key': 'nickname'}) // store the results in a field called nickname
           convo.on('end', function (convo) {
-            if (convo.status === 'completed') {
+            if (convo.status === 'compvared') {
               bot.reply(message, 'OK! I will update my dossier...')
 
               controller.storage.users.get(message.user, function (err, user) {
@@ -168,8 +168,8 @@ controller.hears(['shutdown'], 'direct_message,direct_mention,mention', function
 
 controller.hears(['uptime', 'identify yourself', 'who are you', 'what is your name'],
     'direct_message,direct_mention,mention', function (bot, message) {
-      let hostname = os.hostname()
-      let uptime = formatUptime(process.uptime())
+      var hostname = os.hostname()
+      var uptime = formatUptime(process.uptime())
 
       bot.reply(message,
             ':robot_face: I am a bot named <@' + bot.identity.name +
@@ -178,8 +178,8 @@ controller.hears(['uptime', 'identify yourself', 'who are you', 'what is your na
 
 controller.hears(['hungry', 'i need food'],
         'direct_message,direct_mention,mention', function (bot, message) {
-          let food = ['sushi', 'pizza', 'beer', 'dango', 'sake', 'taco', 'burrito', 'ramen', 'stew', 'peach', 'curry']
-          let randomFood = food[Math.floor(Math.random() * food.length)]
+          var food = ['sushi', 'pizza', 'beer', 'dango', 'sake', 'taco', 'burrito', 'ramen', 'stew', 'peach', 'curry']
+          var randomFood = food[Math.floor(Math.random() * food.length)]
 
           bot.reply(message, `:${randomFood}: here's a ${randomFood} for you`)
         })
@@ -191,40 +191,40 @@ controller.hears(['Harris', 'harris'],
 
 controller.hears(['bored', 'tired', 'random'],
         'direct_message,direct_mention,mention', function (bot, message) {
-          let gif = ['wassup', 'walking on sunshine', '#mashup beer', 'cheer up', 'too bad', 'you are creepy', 'fuck yes', 'no way', 'bow down to me', 'smart si wai', 'sleepy', 'toot my noot']
-          let randomGif = gif[Math.floor(Math.random() * gif.length)]
+          var gif = ['wassup', 'walking on sunshine', '#mashup beer', 'cheer up', 'too bad', 'you are creepy', 'fuck yes', 'no way', 'bow down to me', 'smart si wai', 'sleepy', 'toot my noot']
+          var randomGif = gif[Math.floor(Math.random() * gif.length)]
 
           giphy.translate(randomGif, function (err, res) {
             if (err) console.log(err)
             // put the bot.reply in here cause the scope of genGif get lose outside of this scope
             // another is also because of the callback, if you put it outside, bot.reply will run first even before
             // you get any gif data.
-            let genGif = res.data.url
+            var genGif = res.data.url
             bot.reply(message, genGif)
           })
           // bot.reply(message, 'https://giphy.com/gifs/embarrassed-facepalm-panda-14aUO0Mf7dWDXW')
         })
 controller.hears(['wayne', 'isabella', 'bella', 'love'],
         'direct_message,direct_mention,mention', function (bot, message) {
-          let gif = ['humping', 'kisses', 'love', 'my love', 'sex baby']
-          let randomGif = gif[Math.floor(Math.random() * gif.length)]
+          var gif = ['humping', 'kisses', 'love', 'my love', 'sex baby']
+          var randomGif = gif[Math.floor(Math.random() * gif.length)]
 
           giphy.translate(randomGif, function (err, res) {
             if (err) console.log(err)
             // put the bot.reply in here cause the scope of genGif get lose outside of this scope
             // another is also because of the callback, if you put it outside, bot.reply will run first even before
             // you get any gif data.
-            let genGif = res.data.url
+            var genGif = res.data.url
             bot.reply(message, genGif)
           })
         })
 
 controller.hears(['where should we eat', 'lunch', 'where to eat', 'where to have', 'where should we go', 'what to eat', 'eat what'],
         'direct_message,direct_mention,mention', function (bot, message) {
-          let text = ['maxwell', 'chinatown', 'salad', 'essen', 'muchachos', 'salad', 'coffeeshop opposite', 'salad', 'tzechar', 'paul’s', 'salad']
-          let prompt = ['The tribe has spoken:', 'And... by unanimous vote:', 'You hate it but here goes:', 'Based on today\'s weather:', 'Do you even need to think?']
-          let randomPrompt = prompt[Math.floor(Math.random() * prompt.length)]
-          let randomText = text[Math.floor(Math.random() * text.length)].toUpperCase()
+          var text = ['maxwell', 'chinatown', 'salad', 'essen', 'muchachos', 'salad', 'coffeeshop opposite', 'salad', 'tzechar', 'paul’s', 'salad']
+          var prompt = ['The tribe has spoken:', 'And... by unanimous vote:', 'You hate it but here goes:', 'Based on today\'s weather:', 'Do you even need to think?']
+          var randomPrompt = prompt[Math.floor(Math.random() * prompt.length)]
+          var randomText = text[Math.floor(Math.random() * text.length)].toUpperCase()
 
           bot.reply(message, `${randomPrompt}\n${randomText}`)
         })
@@ -241,7 +241,7 @@ controller.hears(['works', 'finally'],
 
 // controller.hears(['you are (.*)'],
 //         'direct_message,direct_mention,mention', function (bot, message) {
-//           let mood = message.match[1]
+//           var mood = message.match[1]
 //           if (mood === 'awesome' || 'cool' || 'lovely' || 'the best') {
 //             bot.reply(message, `Why thank you!`)
 //           }
@@ -252,7 +252,7 @@ controller.hears(['works', 'finally'],
 //
 // controller.hears(['i (.*) you'],
 //         'direct_message,direct_mention,mention', function (bot, message) {
-//           let mood = message.match[1]
+//           var mood = message.match[1]
 //           if (mood === 'love' || 'missed' || 'like') {
 //             bot.reply(message, `Unlike @bebot2 I'm stupid and always offline. Thank you for appreciating me. :heart_eyes:`)
 //           }
@@ -290,8 +290,8 @@ controller.hears(['works', 'finally'],
 
 controller.hears(['what is', '^fortune$'],
         'direct_message,direct_mention,mention', function (bot, message) {
-          let prompt = ['You will meet cats everywhere you go', 'Beware of flying monkeys', 'Lady luck is on your side', 'Bad shit gonna start happening in 5 ... 4 ... 3 ... 2 ... 1', 'I cannot reveal the secrets of the heavens']
-          let randomPrompt = prompt[Math.floor(Math.random() * prompt.length)]
+          var prompt = ['You will meet cats everywhere you go', 'Beware of flying monkeys', 'Lady luck is on your side', 'Bad shit gonna start happening in 5 ... 4 ... 3 ... 2 ... 1', 'I cannot reveal the secrets of the heavens']
+          var randomPrompt = prompt[Math.floor(Math.random() * prompt.length)]
           bot.reply(message, `:crystal_ball: Telling your fortune ...`)
           setTimeout(function () {
             bot.reply(message, `${randomPrompt}`)
@@ -299,7 +299,7 @@ controller.hears(['what is', '^fortune$'],
         })
 
 function formatUptime (uptime) {
-  let unit = 'second'
+  var unit = 'second'
   if (uptime > 60) {
     uptime = uptime / 60
     unit = 'minute'
@@ -319,8 +319,8 @@ function formatUptime (uptime) {
 // WIT AI code goes here
 // 'use strict'
 //
-// let Wit = null
-// let log = null
+// var Wit = null
+// var log = null
 // try {
 //   // if running from repo
 //   Wit = require('../').Wit
