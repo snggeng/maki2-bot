@@ -1,4 +1,4 @@
-/* for catalyst */
+/* check out slack bot api */
 if (!process.env.TOKEN) {
   console.log('Error: Specify token in environment')
   process.exit(1)
