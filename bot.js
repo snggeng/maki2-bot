@@ -1,4 +1,10 @@
-/* check out slack bot api */
+/*
+  check out:
+  - slack api
+  - botkit
+  - wit.ai
+*/
+
 if (!process.env.TOKEN) {
   console.log('Error: Specify token in environment')
   process.exit(1)
