@@ -3,6 +3,8 @@
   - slack api
   - botkit
   - wit.ai
+  remember to:
+  - npm install
 */
 
 if (!process.env.TOKEN) {
